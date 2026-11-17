@@ -45,8 +45,7 @@ export function request(ctx) {
   `;
   
     return {
-      resourcePath:
-        "/model/global.amazon.nova-2-lite-v1%3A0/converse",
+      resourcePath: "/model/global.amazon.nova-2-lite-v1%3A0/converse",
       method: "POST",
       params: {
         headers: {
@@ -83,16 +82,7 @@ export function request(ctx) {
       };
     }
   
-    let parsedBody;
-  
-    try {
-      parsedBody = JSON.parse(ctx.result.body);
-    } catch (error) {
-      return {
-        body: null,
-        error: "Invalid Bedrock response",
-      };
-    }
+    const parsedBody = JSON.parse(ctx.result.body);
   
     if (ctx.result.statusCode !== 200) {
       return {
@@ -116,13 +106,9 @@ export function request(ctx) {
       };
     }
   
-    let recipe = "";
-  
-    for (let i = 0; i < content.length; i++) {
-      if (content[i].text) {
-        recipe += content[i].text;
-      }
-    }
+    const recipe = content
+      .map((item) => item.text || "")
+      .join("");
   
     return {
       body: recipe || null,
